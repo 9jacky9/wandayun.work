@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工程纪要 - 万达云高敏专线架构与企业级网络实测</title>
+  <meta name="description" content="万达云工程纪要专栏：以瑞士精工标准收录跨国分布式协同、99.999% SLA可用性审查、大模型高并发API长连接调优及现代加密通信协议实测。">
+  <link rel="canonical" href="https://wandayun.work/tech-record.html">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .record-header-strip { padding: 48px 20px 36px; border-bottom: 2px solid var(--swiss-ink); background: var(--swiss-white); }
+    .record-header-inner { max-width: 1200px; margin: 0 auto; }
+    .record-index-code { font-family: var(--swiss-mono); color: var(--swiss-vermilion); font-size: 0.82rem; font-weight: 700; margin-bottom: 12px; }
+    .record-header-strip h1 { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 900; letter-spacing: -0.5px; margin-bottom: 12px; }
+    .record-header-strip p { color: var(--swiss-muted); font-size: 1.05rem; max-width: 720px; line-height: 1.7; }
+    .record-feed-wrap { padding: 60px 20px 80px; max-width: 1200px; margin: 0 auto; }
+    .record-list-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .record-item-cell { background: var(--swiss-white); border: 1.5px solid var(--swiss-border-heavy); padding: 32px 28px; display: flex; flex-direction: column; transition: transform 0.15s, border-color 0.15s; }
+    .record-item-cell:hover { transform: translateY(-3px); border-color: var(--swiss-vermilion); }
+    .cell-top-meta { display: flex; justify-content: space-between; font-family: var(--swiss-mono); font-size: 0.78rem; margin-bottom: 14px; }
+    .cell-num { color: var(--swiss-vermilion); font-weight: 800; }
+    .cell-title { font-size: 1.25rem; font-weight: 900; line-height: 1.45; margin-bottom: 14px; }
+    .cell-title a { color: var(--swiss-ink); text-decoration: none; transition: color 0.15s; }
+    .cell-title a:hover { color: var(--swiss-vermilion); }
+    .cell-summary { font-size: 0.93rem; color: var(--swiss-charcoal); line-height: 1.75; margin-bottom: 24px; flex-grow: 1; }
+    .cell-action-link { font-family: var(--swiss-mono); font-size: 0.88rem; font-weight: 700; color: var(--swiss-vermilion); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .cell-action-link:hover { text-decoration: underline; }
+    @media (max-width: 768px) { .record-list-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部状态标尺 -->
+  <aside class="swiss-chronometer-bar" aria-label="工程专栏运行标准">
+    <div class="chronometer-inner">
+      <div class="chronometer-status">
+        <span>万达云工程纪要专栏 · 架构审查报告汇总</span>
+      </div>
+      <div class="chronometer-specs">
+        <span>审阅级别 <b>ENTERPRISE GRADE</b></span>
+        <span>收录文档 <b>6 篇核心纪要</b></span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 瑞士现代网格导航 -->
+  <header class="swiss-grid-nav">
+    <div class="swiss-nav-wrap">
+      <a href="index.html" class="swiss-logo-link" aria-label="万达云首页">
+        <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
+          <rect x="6" y="6" width="36" height="36" rx="2" stroke="#0f172a" stroke-width="2.5" fill="#ffffff"/>
+          <circle cx="24" cy="24" r="12" stroke="#e11d48" stroke-width="2"/>
+        </svg>
+        <span class="swiss-brand-title">万达云 <span>WANDAYUN</span></span>
+      </a>
+      <nav class="swiss-nav-menu" aria-label="全站导航">
+        <a href="index.html#features" class="swiss-nav-link">专线稳定</a>
+        <a href="index.html#capabilities" class="swiss-nav-link">传输表现</a>
+        <a href="index.html#pricing" class="swiss-nav-link">席位方案</a>
+        <a href="index.html#reviews" class="swiss-nav-link">研发评测</a>
+        <a href="index.html#faq" class="swiss-nav-link">技术答疑</a>
+        <a href="tech-record.html" class="swiss-nav-link swiss-nav-special">工程纪要</a>
+      </nav>
+      <div class="swiss-nav-actions">
+        <a href="https://ww012.twilightaff.com/#/?code=A56DH1Af" target="_blank" rel="nofollow" class="swiss-btn swiss-btn-vermilion">立即接入</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 顶部标题 -->
+  <section class="record-header-strip">
+    <div class="record-header-inner">
+      <div class="record-index-code">// ENGINEERING ARCHIVE // 工程纪要</div>
+      <h1>企业出海专线与网络架构实测档案</h1>
+      <p>记录跨洋高敏网络、SLA 物理层保障、现代协议演进与高并发 API 优化的严谨工程技术实践。</p>
+    </div>
+  </section>
+
+  <!-- 6 篇文章卡片 -->
+  <main class="record-feed-wrap">
+    <div class="record-list-grid">
+      <!-- 1 -->
+      <article class="record-item-cell">
+        <div class="cell-top-meta">
+          <span class="cell-num">[DOC-01 // SLA REVIEW]</span>
+          <span>工时耗时：6 分钟</span>
+        </div>
+        <h2 class="cell-title">
+          <a href="wandayun-enterprise-sla-benchmark-analysis.html">从99.999%可用性看专线架构：万达云企业级高敏连接全面技术审查</a>
+        </h2>
+        <p class="cell-summary">
+          详尽审查万达云二层物理 IEPL 专线骨干架构、双路热备冗余设计与毫秒级时延控制指标，解析其如何为跨国业务提供真正确定性的通信 SLA。
+        </p>
+        <a href="wandayun-enterprise-sla-benchmark-analysis.html" class="cell-action-link">查阅技术纪要 &rarr;</a>
+      </article>
+
+      <!-- 2 -->
+      <article class="record-item-cell">
+        <div class="cell-top-meta">
+          <span class="cell-num">[DOC-02 // DEVOPS SPEED]</span>
+          <span>工时耗时：5 分钟</span>
+        </div>
+        <h2 class="cell-title">
+          <a href="distributed-remote-engineering-latency-audit.html">分布式研发团队协同提速：跨洋Git仓库拉取与Docker构建网络瓶颈突破</a>
+        </h2>
+        <p class="cell-summary">
+          针对跨国工程团队在 GitHub Packfile 拉取、Docker Hub 镜像分层推送及海外 CI/CD 流水线中的常见网络拥塞，提出全栈网络加速实操方案。
+        </p>
+        <a href="distributed-remote-engineering-latency-audit.html" class="cell-action-link">查阅技术纪要 &rarr;</a>
+      </article>
+
+      <!-- 3 -->
+      <article class="record-item-cell">
+        <div class="cell-top-meta">
+          <span class="cell-num">[DOC-03 // COMPLIANCE &amp; CRYPTO]</span>
+          <span>工时耗时：6 分钟</span>
+        </div>
+        <h2 class="cell-title">
+          <a href="enterprise-cross-border-data-privacy-compliance.html">企业出海通信安全合规必读：RAM纯内存无日志技术与AEAD强加密全解析</a>
+        </h2>
+        <p class="cell-summary">
+          全面解析无盘 RAM 内存服务器架构的工作机制与销毁逻辑，探讨前向安全 AEAD 加密算法在防御国际流量窥探及满足跨境合规审计中的核心价值。
+        </p>
+        <a href="enterprise-cross-border-data-privacy-compliance.html" class="cell-action-link">查阅技术纪要 &rarr;</a>
+      </article>
+
+      <!-- 4 -->
+      <article class="record-item-cell">
+        <div class="cell-top-meta">
+          <span class="cell-num">[DOC-04 // LLM PIPELINE]</span>
+          <span>工时耗时：5 分钟</span>
+        </div>
+        <h2 class="cell-title">
+          <a href="llm-api-high-concurrency-token-optimization.html">大模型生产环境API调用优化：长连接保活、TCP拥塞算法与丢包治理</a>
+        </h2>
+        <p class="cell-summary">
+          深入微观网络报文层面，分析 OpenAI 与 Claude 大规模生产调用时的连接池复用（Pooling）、TCP 队头阻塞与 MTU 错配治理方案。
+        </p>
+        <a href="llm-api-high-concurrency-token-optimization.html" class="cell-action-link">查阅技术纪要 &rarr;</a>
+      </article>
+
+      <!-- 5 -->
+      <article class="record-item-cell">
+        <div class="cell-top-meta">
+          <span class="cell-num">[DOC-05 // SAAS ZERO-RISK]</span>
+          <span>工时耗时：5 分钟</span>
+        </div>
+        <h2 class="cell-title">
+          <a href="cross-border-fintech-saas-stability-guide.html">跨境外贸SaaS与金融系统无感漫游：独立固定IP与零风控登录保障实践</a>
+        </h2>
+        <p class="cell-summary">
+          针对跨境外贸企业登录 Stripe、PayPal 及海外银行账户时屡遭二次验证与锁号的痛点，分享利用纯净固定专线 IP 构筑安全漫游环境的实操方案。
+        </p>
+        <a href="cross-border-fintech-saas-stability-guide.html" class="cell-action-link">查阅技术纪要 &rarr;</a>
+      </article>
+
+      <!-- 6 -->
+      <article class="record-item-cell">
+        <div class="cell-top-meta">
+          <span class="cell-num">[DOC-06 // PROTOCOL EVOLUTION]</span>
+          <span>工时耗时：6 分钟</span>
+        </div>
+        <h2 class="cell-title">
+          <a href="network-protocol-evolution-vless-hysteria-review.html">从Shadowsocks到VLESS与Hysteria 2：现代网络代理协议演进与底层性能实测</a>
+        </h2>
+        <p class="cell-summary">
+          系统回顾代理协议发展十年历程，全方位对比 Shadowsocks、Trojan、VLESS-Reality 与基于 UDP 开发的 Hysteria 2 在恶劣弱网环境下的吞吐实测。
+        </p>
+        <a href="network-protocol-evolution-vless-hysteria-review.html" class="cell-action-link">查阅技术纪要 &rarr;</a>
+      </article>
+    </div>
+  </main>
+
+  <!-- 规范页脚 (严格只展示四个页面标题，单页独立呈现) -->
+  <footer class="swiss-minimal-footer">
+    <div class="swiss-container">
+      <nav class="swiss-footer-links-row" aria-label="法律声明与站点导航">
+        <a href="sitemap.html">网站地图</a>
+        <a href="about.html">关于我们</a>
+        <a href="terms.html">服务条款</a>
+        <a href="privacy.html">隐私政策</a>
+      </nav>
+      <div class="swiss-legal-copy">
+        &copy; 2026 万达云 WANDAYUN. All Rights Reserved. 瑞士精工级物理专线互联中枢.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

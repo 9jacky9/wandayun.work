@@ -1,0 +1,738 @@
+/* ==========================================================================
+   万达云 (wandayun.work) - 精密国际主义 / 瑞士高频现代风 (Kinetic Swiss Modernism)
+   纯原生极限性能：0外部请求，系统字体栈，高对比度，4G弱网极速秒开
+   ========================================================================== */
+
+:root {
+  --swiss-white: #ffffff;
+  --swiss-canvas: #f8fafc;
+  --swiss-surface: #ffffff;
+  --swiss-border: #cbd5e1;
+  --swiss-border-heavy: #0f172a;
+  --swiss-ink: #0f172a;
+  --swiss-charcoal: #334155;
+  --swiss-muted: #64748b;
+  --swiss-vermilion: #e11d48;
+  --swiss-vermilion-soft: #fff1f2;
+  --swiss-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --swiss-mono: ui-monospace, "SF Mono", "DejaVu Sans Mono", Menlo, Consolas, monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 核心超链接规范：鲜明朱红强调色，杜绝浏览器默认蓝/紫，访问前后保持一致 */
+a:link, a:visited {
+  color: var(--swiss-vermilion);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+}
+a:hover, a:focus {
+  color: #be123c;
+  text-decoration-thickness: 2.5px;
+}
+
+/* 无下划线组件级链接覆写 */
+.swiss-logo-link, 
+.swiss-btn, 
+.swiss-footer-links-row a,
+.back-home {
+  text-decoration: none !important;
+}
+
+body {
+  background-color: var(--swiss-canvas);
+  color: var(--swiss-ink);
+  font-family: var(--swiss-sans);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* 顶部瑞士时钟与SLA状态尺 */
+.swiss-chronometer-bar {
+  background: var(--swiss-ink);
+  color: #ffffff;
+  padding: 8px 16px;
+  font-family: var(--swiss-mono);
+  font-size: 0.78rem;
+  border-bottom: 2px solid var(--swiss-vermilion);
+}
+.chronometer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.chronometer-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.chronometer-status::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--swiss-vermilion);
+}
+.chronometer-specs span b {
+  color: #38bdf8;
+}
+
+/* 瑞士现代网格导航 */
+.swiss-grid-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 2px solid var(--swiss-ink);
+}
+.swiss-nav-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.swiss-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--swiss-ink);
+}
+.swiss-brand-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+.swiss-brand-title span {
+  color: var(--swiss-vermilion);
+}
+.swiss-nav-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* 瑞士极简按钮系统 */
+.swiss-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  border-radius: 2px;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s;
+}
+.swiss-btn-vermilion {
+  background: var(--swiss-vermilion);
+  color: #ffffff;
+  border: 2px solid var(--swiss-vermilion);
+}
+.swiss-btn-vermilion:hover {
+  background: #be123c;
+  border-color: #be123c;
+}
+.swiss-btn-dofollow {
+  background: var(--swiss-white);
+  color: var(--swiss-ink);
+  border: 2px solid var(--swiss-ink);
+}
+.swiss-btn-dofollow:hover {
+  background: var(--swiss-ink);
+  color: #ffffff;
+}
+.swiss-btn-ghost {
+  background: transparent;
+  color: var(--swiss-ink);
+  border: 1px solid var(--swiss-border);
+}
+.swiss-btn-ghost:hover {
+  border-color: var(--swiss-ink);
+}
+
+/* 瑞士社论式非对称首屏 (8-col Split Hero) */
+.swiss-editorial-hero {
+  padding: 64px 20px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.swiss-hero-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+  border-bottom: 2px solid var(--swiss-ink);
+  padding-bottom: 60px;
+}
+.swiss-toc-col {
+  border-right: 1px solid var(--swiss-border);
+  padding-right: 28px;
+  font-family: var(--swiss-mono);
+  font-size: 0.82rem;
+}
+.toc-label {
+  color: var(--swiss-vermilion);
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: block;
+}
+.toc-list {
+  list-style: none;
+}
+.toc-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+  color: var(--swiss-charcoal);
+  display: flex;
+  justify-content: space-between;
+}
+.swiss-manifesto-col {
+  padding-left: 12px;
+}
+.swiss-sub-kicker {
+  font-family: var(--swiss-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--swiss-vermilion);
+  margin-bottom: 14px;
+}
+.swiss-hero-heading {
+  font-size: clamp(2.3rem, 4.2vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+  color: var(--swiss-ink);
+}
+.swiss-hero-heading em {
+  font-style: normal;
+  border-bottom: 4px solid var(--swiss-vermilion);
+}
+.swiss-manifesto-lead {
+  font-size: 1.1rem;
+  color: var(--swiss-charcoal);
+  line-height: 1.8;
+  max-width: 680px;
+  margin-bottom: 36px;
+}
+.swiss-hero-cta-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* 瑞士结构化分区通用 */
+.swiss-section {
+  padding: 72px 20px;
+  border-bottom: 2px solid var(--swiss-ink);
+}
+.swiss-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.swiss-section-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--swiss-border);
+  padding-bottom: 14px;
+  margin-bottom: 40px;
+}
+.swiss-meta-title {
+  font-size: 1.85rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+.swiss-meta-tag {
+  font-family: var(--swiss-mono);
+  font-size: 0.82rem;
+  color: var(--swiss-vermilion);
+  font-weight: 700;
+}
+
+/* 核心特性格网 (随机化特色标题：真毫秒级的极致稳定连接) */
+.swiss-cells-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.swiss-cell {
+  background: var(--swiss-white);
+  border: 1.5px solid var(--swiss-border-heavy);
+  padding: 32px 26px;
+  position: relative;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.swiss-cell:hover {
+  transform: translateY(-2px);
+  border-color: var(--swiss-vermilion);
+}
+.swiss-num-flag {
+  font-family: var(--swiss-mono);
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--swiss-vermilion);
+  margin-bottom: 16px;
+  display: block;
+}
+.swiss-icon-slot {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 18px;
+}
+.swiss-cell-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.swiss-cell-body {
+  font-size: 0.94rem;
+  color: var(--swiss-muted);
+  line-height: 1.7;
+}
+
+/* 全链路传输表现 (随机化特色标题：全链路数据传输表现) */
+.swiss-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  background: var(--swiss-white);
+  border: 1.5px solid var(--swiss-border-heavy);
+}
+.swiss-matrix-table th, 
+.swiss-matrix-table td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--swiss-border);
+  font-size: 0.94rem;
+}
+.swiss-matrix-table th {
+  background: #f1f5f9;
+  font-family: var(--swiss-mono);
+  font-size: 0.82rem;
+  color: var(--swiss-charcoal);
+  border-bottom: 2px solid var(--swiss-border-heavy);
+}
+.swiss-matrix-table tr:last-child td {
+  border-bottom: none;
+}
+.swiss-ping-val {
+  font-family: var(--swiss-mono);
+  font-weight: 700;
+  color: var(--swiss-vermilion);
+}
+
+/* 定价对比三栏 (随机化特色标题：按需定制专业席位) */
+.swiss-seat-deck {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+.swiss-seat-chassis {
+  background: var(--swiss-white);
+  border: 2px solid var(--swiss-border-heavy);
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.swiss-seat-chassis.pro-tier {
+  border-color: var(--swiss-vermilion);
+  background: #fffafa;
+}
+.seat-tier-flag {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: var(--swiss-vermilion);
+  color: #ffffff;
+  font-family: var(--swiss-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+}
+.seat-name {
+  font-size: 1.3rem;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.seat-desc {
+  font-size: 0.85rem;
+  color: var(--swiss-muted);
+  margin-bottom: 24px;
+  min-height: 40px;
+}
+.seat-price {
+  font-family: var(--swiss-mono);
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--swiss-ink);
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 16px;
+}
+.seat-price span {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--swiss-muted);
+}
+.seat-specs-list {
+  list-style: none;
+  margin-bottom: 32px;
+  flex-grow: 1;
+}
+.seat-specs-list li {
+  font-size: 0.92rem;
+  color: var(--swiss-charcoal);
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.seat-specs-list li::before {
+  content: "—";
+  color: var(--swiss-vermilion);
+  font-weight: bold;
+}
+.swiss-seat-chassis .swiss-btn {
+  width: 100%;
+}
+
+/* 用户评测 (随机化特色标题：来自跨国研发团队的信赖评测) */
+.swiss-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.swiss-review-block {
+  background: var(--swiss-white);
+  border: 1px solid var(--swiss-border);
+  padding: 26px;
+  border-top: 3px solid var(--swiss-ink);
+}
+.swiss-review-block p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--swiss-charcoal);
+  margin-bottom: 18px;
+}
+.swiss-author-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 12px;
+  font-family: var(--swiss-mono);
+  font-size: 0.8rem;
+}
+.swiss-avatar-sq {
+  width: 32px;
+  height: 32px;
+  background: var(--swiss-ink);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* 常见问题 (随机化特色标题：企业技术标准与服务问答) */
+.swiss-faq-accordion {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.swiss-faq-cell {
+  background: var(--swiss-white);
+  border: 1px solid var(--swiss-border);
+  padding: 24px;
+}
+.swiss-faq-question {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--swiss-ink);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.swiss-faq-question::before {
+  content: "[?]";
+  color: var(--swiss-vermilion);
+  font-family: var(--swiss-mono);
+  font-size: 0.9rem;
+}
+.swiss-faq-answer {
+  font-size: 0.92rem;
+  color: var(--swiss-muted);
+  line-height: 1.75;
+}
+
+/* 规范页脚 (严格只展示四个页面标题) */
+.swiss-minimal-footer {
+  background: var(--swiss-ink);
+  color: #ffffff;
+  padding: 48px 20px;
+  text-align: center;
+}
+.swiss-footer-links-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.swiss-footer-links-row a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.15s;
+}
+.swiss-footer-links-row a:hover {
+  color: var(--swiss-vermilion);
+}
+.swiss-legal-copy {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-family: var(--swiss-mono);
+}
+
+/* 响应式移动端手指触控友好适配 */
+@media (max-width: 960px) {
+  .swiss-hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .swiss-toc-col {
+    display: none;
+  }
+  .swiss-cells-grid,
+  .swiss-seat-deck,
+  .swiss-reviews-grid,
+  .swiss-faq-accordion {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .chronometer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .swiss-nav-wrap {
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .swiss-nav-actions {
+    width: 100%;
+  }
+  .swiss-nav-actions .swiss-btn {
+    flex: 1;
+    min-height: 44px;
+  }
+  .swiss-hero-heading {
+    font-size: 1.9rem;
+  }
+  .swiss-hero-cta-row {
+    flex-direction: column;
+  }
+  .swiss-hero-cta-row .swiss-btn {
+    width: 100%;
+    min-height: 48px;
+  }
+  .swiss-footer-links-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+
+
+/* ==========================================================================
+   全设备自适应导航菜单 (CTA 按钮固定于右侧，移动端绝对可见、永不缺失、支持手势横滑)
+   ========================================================================== */
+.swiss-grid-nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #ffffff;
+  border-bottom: 2px solid var(--swiss-border);
+}
+.swiss-nav-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+.swiss-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none !important;
+  color: var(--swiss-ink) !important;
+  flex-shrink: 0;
+}
+.swiss-brand-title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: var(--swiss-ink);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.swiss-brand-title span {
+  font-size: 0.72rem;
+  font-family: var(--swiss-mono);
+  font-weight: 700;
+  color: var(--swiss-vermilion);
+  letter-spacing: 1px;
+}
+.swiss-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: auto;
+  margin-right: 16px;
+}
+.swiss-nav-link,
+.swiss-nav-link:link,
+.swiss-nav-link:visited {
+  color: var(--swiss-ink) !important;
+  -webkit-text-fill-color: var(--swiss-ink) !important;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none !important;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.swiss-nav-link:hover,
+.swiss-nav-link:focus {
+  color: var(--swiss-vermilion) !important;
+  -webkit-text-fill-color: var(--swiss-vermilion) !important;
+}
+.swiss-nav-special,
+.swiss-nav-special:link,
+.swiss-nav-special:visited {
+  color: var(--swiss-vermilion) !important;
+  -webkit-text-fill-color: var(--swiss-vermilion) !important;
+  font-weight: 800;
+}
+.swiss-nav-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* 按钮文字最高优先级可见性规范 */
+a.swiss-btn,
+a.swiss-btn:link,
+a.swiss-btn:visited {
+  text-decoration: none !important;
+}
+a.swiss-btn-vermilion,
+a.swiss-btn-vermilion:link,
+a.swiss-btn-vermilion:visited {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: var(--swiss-vermilion) !important;
+}
+a.swiss-btn-vermilion:hover,
+a.swiss-btn-vermilion:focus {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background: #be123c !important;
+}
+a.swiss-btn-dofollow,
+a.swiss-btn-dofollow:link,
+a.swiss-btn-dofollow:visited {
+  color: var(--swiss-ink) !important;
+  -webkit-text-fill-color: var(--swiss-ink) !important;
+}
+a.swiss-btn-ghost,
+a.swiss-btn-ghost:link,
+a.swiss-btn-ghost:visited {
+  color: var(--swiss-ink) !important;
+  -webkit-text-fill-color: var(--swiss-ink) !important;
+}
+
+/* 移动端媒体查询 (< 860px) 强效保障导航菜单绝对不消失，且 CTA 按钮位于右上侧 */
+@media (max-width: 860px) {
+  .swiss-nav-wrap {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    grid-template-rows: auto auto !important;
+    row-gap: 8px !important;
+    column-gap: 12px !important;
+    padding: 10px 14px !important;
+    align-items: center !important;
+  }
+  .swiss-logo-link {
+    grid-column: 1 / 2 !important;
+    grid-row: 1 / 2 !important;
+    justify-self: start !important;
+  }
+  .swiss-nav-actions {
+    grid-column: 2 / 3 !important;
+    grid-row: 1 / 2 !important;
+    justify-self: end !important;
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+  }
+  .swiss-nav-actions .swiss-btn {
+    padding: 7px 16px !important;
+    font-size: 0.82rem !important;
+    min-height: 36px !important;
+  }
+  .swiss-nav-menu {
+    grid-column: 1 / 3 !important;
+    grid-row: 2 / 3 !important;
+    display: flex !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding: 6px 0 2px !important;
+    margin: 0 !important;
+    gap: 10px !important;
+    border-top: 1px solid var(--swiss-border) !important;
+  }
+  .swiss-nav-menu::-webkit-scrollbar {
+    display: none !important;
+  }
+  .swiss-nav-link,
+  .swiss-nav-link:link,
+  .swiss-nav-link:visited {
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    padding: 6px 12px !important;
+    background: #f1f5f9 !important;
+    border: 1px solid var(--swiss-border) !important;
+    border-radius: 2px !important;
+    font-size: 0.82rem !important;
+  }
+}

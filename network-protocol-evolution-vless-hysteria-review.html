@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>从Shadowsocks到VLESS与Hysteria 2：现代网络代理协议演进与底层性能实测 - 工程纪要</title>
+  <meta name="description" content="全面梳理网络代理协议十余年演进技术脉络，深入对比Shadowsocks、VMess、VLESS-Reality与Hysteria 2在握手开销、DPI抗封锁与抗丢包性能上的实测差异。">
+  <link rel="canonical" href="https://wandayun.work/network-protocol-evolution-vless-hysteria-review.html">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .swiss-article-layout { max-width: 860px; margin: 44px auto 80px; padding: 0 20px; }
+    .swiss-article-header { border-bottom: 2px solid var(--swiss-ink); padding-bottom: 28px; margin-bottom: 36px; }
+    .swiss-doc-serial { font-family: var(--swiss-mono); font-size: 0.82rem; font-weight: 800; color: var(--swiss-vermilion); margin-bottom: 12px; }
+    .swiss-article-header h1 { font-size: clamp(1.85rem, 3.6vw, 2.4rem); font-weight: 900; line-height: 1.35; letter-spacing: -0.5px; margin-bottom: 16px; color: var(--swiss-ink); }
+    .swiss-header-meta { display: flex; gap: 24px; font-family: var(--swiss-mono); font-size: 0.8rem; color: var(--swiss-muted); }
+    .swiss-article-content { font-size: 1.02rem; line-height: 1.85; color: var(--swiss-charcoal); }
+    .swiss-article-content h2 { font-size: 1.45rem; color: var(--swiss-ink); margin: 40px 0 16px; border-left: 4px solid var(--swiss-vermilion); padding-left: 14px; font-weight: 900; }
+    .swiss-article-content h3 { font-size: 1.2rem; color: var(--swiss-ink); margin: 28px 0 12px; font-weight: 800; }
+    .swiss-article-content p { margin-bottom: 20px; }
+    .swiss-article-content ul, .swiss-article-content ol { margin: 16px 0 24px 24px; }
+    .swiss-article-content li { margin-bottom: 10px; }
+    .swiss-audit-box { background: var(--swiss-white); border: 2px solid var(--swiss-border-heavy); padding: 22px 26px; margin: 28px 0; border-radius: 2px; }
+    .back-action { display: inline-flex; align-items: center; gap: 6px; color: var(--swiss-vermilion); font-family: var(--swiss-mono); font-size: 0.88rem; font-weight: 700; margin-bottom: 24px; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <aside class="swiss-chronometer-bar" aria-label="运行状态">
+    <div class="chronometer-inner">
+      <div class="chronometer-status">
+        <span>万达云技术纪要 · 研发效能调优报告</span>
+      </div>
+      <div class="chronometer-specs">
+        <span>工程场景 <b>DEVOPS // CI/CD PIPELINE</b></span>
+        <span>优化目标 <b>拉取速率提升 300%</b></span>
+      </div>
+    </div>
+  </aside>
+
+  <header class="swiss-grid-nav">
+    <div class="swiss-nav-wrap">
+      <a href="index.html" class="swiss-logo-link">
+        <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
+          <rect x="6" y="6" width="36" height="36" rx="2" stroke="#0f172a" stroke-width="2.5" fill="#ffffff"/>
+          <circle cx="24" cy="24" r="12" stroke="#e11d48" stroke-width="2"/>
+        </svg>
+        <span class="swiss-brand-title">万达云 <span>WANDAYUN</span></span>
+      </a>
+      <nav class="swiss-nav-menu" aria-label="全站导航">
+        <a href="index.html#features" class="swiss-nav-link">专线稳定</a>
+        <a href="index.html#capabilities" class="swiss-nav-link">传输表现</a>
+        <a href="index.html#pricing" class="swiss-nav-link">席位方案</a>
+        <a href="index.html#reviews" class="swiss-nav-link">研发评测</a>
+        <a href="index.html#faq" class="swiss-nav-link">技术答疑</a>
+        <a href="tech-record.html" class="swiss-nav-link swiss-nav-special">工程纪要</a>
+      </nav>
+      <div class="swiss-nav-actions">
+        <a href="https://ww012.twilightaff.com/#/?code=A56DH1Af" target="_blank" rel="nofollow" class="swiss-btn swiss-btn-vermilion">立即接入</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="swiss-article-layout">
+    <a href="tech-record.html" class="back-action">&larr; 返回工程纪要目录</a>
+
+    <article>
+      <header class="swiss-article-header">
+        <div class="swiss-doc-serial">// PROTOCOL EVOLUTION STUDY // 协议演进前沿</div>
+        <h1>从Shadowsocks到VLESS与Hysteria 2：现代网络代理协议演进与底层性能实测</h1>
+        <div class="swiss-header-meta">
+          <span>审核时间：2026-10-13</span>
+          <span>文档字数：约 1,180 字</span>
+          <span>分类：网络协议工程与性能基准测试</span>
+        </div>
+      </header>
+
+      <div class="swiss-article-content">
+        <p>网络代理技术自诞生以来，经历了长达十余年的技术博弈与演进迭代。从早期的 Socks5、Shadowsocks 到后来的 VMess，再到如今备受瞩目的 VLESS-Reality 与基于 UDP 的 Hysteria 2、TUIC，底层网络传输协议的设计理念发生着天翻地覆的根本性变革，深刻重塑着跨洋连接的性能边界。</p>
+        <h2>第一代与第二代代理协议的历史局限</h2>
+        <p>早期广泛应用的 Shadowsocks 协议以轻量高效著称，但由于其密文特征在现代深度包检测（DPI）算法面前逐渐暴露，极其容易被识别并遭到丢包干扰。随后诞生的 VMess 协议引入了更复杂的对称加密与时钟校验，但也带来了显著的 CPU 开销与传输膨胀率。</p>
+        <h3>传统 TLS 嵌套带来的双重加解密开销</h3>
+        <p>为了伪装成正常的网站流量，早期技术方案普遍采用在 VMess 外部粗暴套用一层标准 TLS 的做法。这种双重加密架构导致客户端与服务器必须进行两次握手与两套密码学运算，在低功耗软路由和移动端设备上会造成严重的算力浪费与延迟增加。</p>
+        <h2>VLESS-Reality 架构的革命性创新</h2>
+        <p>VLESS 协议从底层彻底去除了不必要的二次加密流程，转而将安全信任完全托付给外层的 TLS 隧道。而 Reality 技术更是革命性地消除了对自建域名的依赖，直接借用海外知名大厂真实网站的公钥证书进行身份认证，彻底消除了服务器特征。</p>
+        <div class="swiss-audit-box">“在权威第三方机构出具的<a href="https://tizilab.net/" target="_blank">专业机场节点测评排行榜</a>中，采用最新 VLESS-Reality 协议搭配物理 IEPL 专线的节点，在握手起步延迟与恶劣弱网抗压测试中均斩获了顶格的性能评分。”</div>
+        <h3>UDP 与 Hysteria 2 在高丢包环境下的爆发力</h3>
+        <p>当面临跨洋光缆偶发性丢包时，传统的 TCP 拥塞控制算法会不可避免地触发拥塞窗口急剧减半。基于 QUIC 协议修改而来的 Hysteria 2 协议抛弃了传统的拥塞控制模型，采用创新的 Brutal 拥塞控制机制，在高达 20% 丢包的弱网环境下依然能暴力跑满带宽。</p>
+        <h2>企业与极客环境下的协议科学选型策略</h2>
+        <p>面对如此丰富的协议生态，用户不应盲目盲从，而应根据具体应用场景进行科学选配：对于注重极致隐蔽性与稳定性的长期办公与商业交互，推荐优先选用纯净的 VLESS-Reality 专线通道。</p>
+        <h3>流媒体与大吞吐任务的协议协同</h3>
+        <p>而对于需要进行大规模超大文件拉取或处于运营商恶劣 UDP 限速环境的用户，则应灵活配合 TCP 多路复用隧道，取长补短，让每一种协议在最适合的场景下发挥出极致的传输潜能。</p>
+        <h2>结语：协议演进永无止境，底层基建方为基石</h2>
+        <p>传输协议的演进展现了软件工程对物理限制的不断突围。但无论上层协议多么精巧，充足的物理带宽与稳定的专线路由始终是决定跨洋速度的根本决定力量。唯有软硬件两手硬，才能享受无拘无束的全球网络极速互联。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="swiss-footer-grid">
+    <div class="swiss-footer-inner">
+      <nav class="swiss-footer-links">
+        <a href="sitemap.html" class="swiss-footer-link">网站地图</a>
+        <a href="about.html" class="swiss-footer-link">关于我们</a>
+        <a href="terms.html" class="swiss-footer-link">服务条款</a>
+        <a href="privacy.html" class="swiss-footer-link">隐私政策</a>
+      </nav>
+      <div class="swiss-copyright">
+        &copy; 2026 万达云 WANDAYUN. All Rights Reserved. 瑞士高精工业级技术专线中枢.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
